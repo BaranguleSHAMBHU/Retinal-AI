@@ -1,42 +1,210 @@
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap');
+
+/* =========================================
+   1. LIGHT MODE (Default to match your image)
+   ========================================= */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --bg-primary: #f4f9fd;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f8fafc;
+  
+  /* Theme Accents based on your screenshot */
+  --accent-cyan: #42a8b3; 
+  --accent-teal: #368f98;
+  --accent-blue: #3b82f6;
+  
+  --text-primary: #1e293b;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  
+  --border: rgba(0, 0, 0, 0.06);
+  --border-hover: rgba(66, 168, 179, 0.3);
+  
+  /* Soft shadows for light mode instead of neon glows */
+  --glow: 0 4px 20px rgba(0, 0, 0, 0.04);
+  --glow-strong: 0 8px 30px rgba(66, 168, 179, 0.2);
+  --grid-line: rgba(66, 168, 179, 0.04);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* =========================================
+   2. DARK MODE (Your original custom design)
+   ========================================= */
+[data-theme='dark'] {
+  --bg-primary: #020d18;
+  --bg-secondary: #041424;
+  --bg-card: #071e30;
+  --bg-card-hover: #0a2540;
+  
+  --accent-cyan: #00d4ff;
+  --accent-teal: #00b4a0;
+  --accent-blue: #1a6fff;
+  
+  --text-primary: #e8f4f8;
+  --text-secondary: #7ab3cc;
+  --text-muted: #3d6b82;
+  
+  --border: rgba(0, 212, 255, 0.12);
+  --border-hover: rgba(0, 212, 255, 0.35);
+  
+  /* Neon glows for dark mode */
+  --glow: 0 0 40px rgba(0, 212, 255, 0.15);
+  --glow-strong: 0 0 80px rgba(0, 212, 255, 0.25);
+  --grid-line: rgba(0, 212, 255, 0.03);
 }
 
-html,
+/* =========================================
+   3. GLOBAL STYLES
+   ========================================= */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
 body {
-  max-width: 100vw;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: 'Sora', sans-serif;
   overflow-x: hidden;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--accent-teal); border-radius: 3px; }
+
+/* Grid overlay bg - Now adapts to light/dark mode! */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    linear-gradient(var(--grid-line) 1px, transparent 1px),
+    linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  z-index: 0;
+  transition: background-image 0.4s ease;
 }
 
-* {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
+section { position: relative; z-index: 1; }
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
 }
 
-a {
-  color: inherit;
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Space Mono', monospace;
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--accent-cyan);
+  margin-bottom: 16px;
+}
+
+.section-tag::before {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--accent-cyan);
+}
+
+h1, h2, h3, h4 { line-height: 1.1; color: var(--text-primary); }
+
+.gradient-text {
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-teal));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Buttons */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--accent-cyan), var(--accent-teal));
+  color: #ffffff; /* Explicitly white text for buttons in both modes */
+  font-family: 'Sora', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  letter-spacing: 0.5px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
   text-decoration: none;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
+
+.btn-primary:hover::before { opacity: 0.1; }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: var(--glow-strong); }
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 13px 30px;
+  background: transparent;
+  color: var(--accent-cyan);
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 14px;
+  border: 1px solid var(--border-hover);
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.3s ease;
+}
+
+.btn-outline:hover {
+  background: rgba(0,212,255,0.08);
+  border-color: var(--accent-cyan);
+  transform: translateY(-2px);
+}
+
+/* Cards */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  transition: all 0.3s ease;
+  box-shadow: var(--glow);
+}
+
+.card:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-card-hover);
+  transform: translateY(-4px);
+  box-shadow: var(--glow-strong);
+}
+
+/* Animations */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+.animate-fade-up { animation: fadeInUp 0.7s ease forwards; }
+.animate-float { animation: float 4s ease-in-out infinite; }
