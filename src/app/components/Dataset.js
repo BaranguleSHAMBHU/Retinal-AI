@@ -1,8 +1,9 @@
 const classes = [
-  { name: 'Cataract', color: '#f59e0b', desc: 'Clouding of the eye lens causing blurred vision.' },
-  { name: 'Diabetic Retinopathy', color: '#ef4444', desc: 'Damage to retinal blood vessels from high blood sugar.' },
-  { name: 'Glaucoma', color: '#8b5cf6', desc: 'Optic nerve damage often linked to elevated eye pressure.' },
-  { name: 'Normal', color: '#10b981', desc: 'Healthy retina with no signs of disease.' },
+  // Added the exact file paths based on your screenshot
+  { name: 'Cataract', color: '#f59e0b', desc: 'Clouding of the eye lens causing blurred vision.', image: '/cataract.jpg' },
+  { name: 'Diabetic Retinopathy', color: '#ef4444', desc: 'Damage to retinal blood vessels from high blood sugar.', image: '/Diabetic Retinopathy.png' },
+  { name: 'Glaucoma', color: '#8b5cf6', desc: 'Optic nerve damage often linked to elevated eye pressure.', image: '/Glaucoma.jpg' },
+  { name: 'Normal', color: '#10b981', desc: 'Healthy retina with no signs of disease.', image: '/normal.jpg' },
 ]
 
 export default function Dataset() {
@@ -45,26 +46,22 @@ export default function Dataset() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 20 }}>
           {classes.map((c, i) => (
             <div key={i} className="card" style={{ padding: 28, textAlign: 'center' }}>
-              {/* Retina circle placeholder */}
-              <div style={{
-                width: 90, height: 90, borderRadius: '50%', margin: '0 auto 20px',
-                background: `radial-gradient(circle at 40% 35%, ${c.color}33, ${c.color}11)`,
-                border: `2px solid ${c.color}44`,
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                position: 'relative', overflow: 'hidden',
-              }}>
-                <div style={{
-                  width: 40, height: 40, borderRadius: '50%',
-                  background: `radial-gradient(circle, ${c.color}88, ${c.color}22)`,
-                }} />
-                <div style={{
-                  position: 'absolute', bottom: 20, left: '50%',
-                  transform: 'translateX(-50%)',
-                  width: 12, height: 12, borderRadius: '50%',
-                  background: c.color, opacity: 0.6,
-                  boxShadow: `0 0 10px ${c.color}`,
-                }} />
-              </div>
+              
+              {/* Replaced CSS circles with actual images */}
+              <img 
+                src={c.image} 
+                alt={c.name}
+                style={{
+                  width: 90, height: 90, 
+                  borderRadius: '50%', 
+                  margin: '0 auto 20px',
+                  objectFit: 'cover', // Ensures the image fills the circle without squishing
+                  border: `2px solid ${c.color}88`,
+                  boxShadow: `0 0 20px ${c.color}22`, // Keeps a subtle glow matching the disease color
+                  display: 'block'
+                }} 
+              />
+              
               <div style={{
                 display: 'inline-block', padding: '4px 14px', borderRadius: 50,
                 background: `${c.color}18`, border: `1px solid ${c.color}44`,

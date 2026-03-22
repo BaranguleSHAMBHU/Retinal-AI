@@ -1,14 +1,12 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { Eye, Menu, X, Sun, Moon } from 'lucide-react'
+import { Menu, X, Sun, Moon } from 'lucide-react'
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
-  // Defaulting to false (light mode) to match your reference image
   const [isDarkMode, setIsDarkMode] = useState(false)
 
-  // Load the saved theme when the page loads
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'light';
     if (savedTheme === 'dark') {
@@ -17,12 +15,11 @@ export default function Navbar() {
     }
   }, [])
 
-  // Function to run when the button is clicked
   const toggleTheme = () => {
     const newMode = !isDarkMode;
     setIsDarkMode(newMode);
     document.documentElement.setAttribute('data-theme', newMode ? 'dark' : 'light');
-    localStorage.setItem('theme', newMode ? 'dark' : 'light'); // Saves preference!
+    localStorage.setItem('theme', newMode ? 'dark' : 'light'); 
   }
   
   useEffect(() => {
@@ -33,14 +30,12 @@ export default function Navbar() {
 
   const links = ['About', 'Dataset', 'Models', 'Prediction', 'Performance']
 
-  // Theme configuration based on your UI image
   const theme = isDarkMode ? {
     navBg: scrolled ? 'rgba(2,13,24,0.95)' : 'transparent',
     border: scrolled ? '1px solid rgba(0,212,255,0.1)' : '1px solid transparent',
     textPrimary: '#ffffff',
     textSecondary: 'rgba(255,255,255,0.7)',
     accent: '#00d4ff',
-    logoBg: 'linear-gradient(135deg, #00d4ff, #00b4a0)',
     mobileMenuBg: 'rgba(4,20,36,0.98)',
     mobileBorder: 'rgba(255,255,255,0.1)',
     btnText: '#020d18'
@@ -49,8 +44,7 @@ export default function Navbar() {
     border: scrolled ? '1px solid rgba(0,0,0,0.05)' : '1px solid transparent',
     textPrimary: '#1e293b',
     textSecondary: '#475569',
-    accent: '#42a8b3', // Teal color extracted from your image
-    logoBg: 'linear-gradient(135deg, #42a8b3, #368f98)',
+    accent: '#42a8b3', 
     mobileMenuBg: 'rgba(255,255,255,0.98)',
     mobileBorder: 'rgba(0,0,0,0.05)',
     btnText: '#ffffff'
@@ -68,16 +62,24 @@ export default function Navbar() {
       <div className="container" style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '0 24px', maxWidth: '1200px', margin: '0 auto' }}>
         
         {/* Logo */}
-        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+        <a href="#" style={{ display: 'flex', alignItems: 'center', gap: 12, textDecoration: 'none' }}>
           <div style={{
-            width: 38, height: 38, borderRadius: 10,
-            background: theme.logoBg,
+            width: 40, height: 40, 
+            borderRadius: 12, // Gives it that modern "App Icon" squircle shape
+            overflow: 'hidden', // Crops the image to fit the rounded corners
+            border: `2px solid ${theme.accent}`, // Wraps it in your theme's cyan/teal color
+            boxShadow: `0 0 15px ${theme.accent}40`, // Subtle glowing effect
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            transition: 'background 0.3s ease'
+            transition: 'all 0.3s ease'
           }}>
-            <Eye size={20} color={isDarkMode ? "#020d18" : "#ffffff"} />
+            {/* The actual realistic eye image */}
+            <img 
+              src="/eye.jpg" 
+              alt="RetinalAI Logo" 
+              style={{ width: '100%', height: '100%', objectFit: 'cover' }} 
+            />
           </div>
-          <span style={{ fontWeight: 700, fontSize: 18, color: theme.textPrimary, letterSpacing: '-0.3px', transition: 'color 0.3s ease' }}>
+          <span style={{ fontWeight: 800, fontSize: 20, color: theme.textPrimary, letterSpacing: '-0.5px', transition: 'color 0.3s ease' }}>
             Retinal<span style={{ color: theme.accent, transition: 'color 0.3s ease' }}>AI</span>
           </span>
         </a>
@@ -98,7 +100,6 @@ export default function Navbar() {
             </li>
           ))}
           
-          {/* Unique Theme Toggle Button - FIXED ONCLICK */}
           <li>
             <button
               onClick={toggleTheme}
@@ -182,7 +183,6 @@ export default function Navbar() {
           ))}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 0', borderBottom: `1px solid ${theme.mobileBorder}` }}>
             <span style={{ color: theme.textSecondary, fontSize: 15 }}>Theme</span>
-            {/* Mobile Theme Toggle Button - FIXED ONCLICK */}
             <button
               onClick={toggleTheme}
               style={{

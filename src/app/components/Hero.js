@@ -9,7 +9,7 @@ export default function Hero() {
       padding: '120px 0 80px',
       position: 'relative', overflow: 'hidden',
     }}>
-      {/* BG orbs - Adapted to use theme accents with opacity */}
+      {/* BG orbs */}
       <div style={{
         position: 'absolute', top: '15%', right: '5%',
         width: 500, height: 500, borderRadius: '50%',
@@ -81,6 +81,8 @@ export default function Hero() {
         @media (max-width: 768px) {
           #home > div { grid-template-columns: 1fr !important; }
         }
+        @keyframes slow-spin { 100% { transform: rotate(360deg); } }
+        @keyframes reverse-spin { 100% { transform: rotate(-360deg); } }
       `}</style>
     </section>
   )
@@ -89,51 +91,76 @@ export default function Hero() {
 function EyeVisual() {
   return (
     <div style={{ position: 'relative', width: 360, height: 360 }} className="animate-float">
-      {/* Outer ring */}
+      {/* Outer HUD ring */}
       <div style={{
         position: 'absolute', inset: 0, borderRadius: '50%',
         border: '1px solid var(--accent-cyan)',
-        opacity: 0.2,
-        animation: 'pulse-glow 3s ease-in-out infinite',
-      }} />
-      {/* Middle ring */}
-      <div style={{
-        position: 'absolute', inset: 30, borderRadius: '50%',
-        border: '1px dashed var(--accent-teal)',
         opacity: 0.3,
+        animation: 'pulse-glow 3s ease-in-out infinite',
+        boxShadow: '0 0 30px rgba(0,212,255,0.1), inset 0 0 20px rgba(0,212,255,0.1)'
+      }} />
+      
+      {/* Spinning dashed middle ring */}
+      <div style={{
+        position: 'absolute', inset: 24, borderRadius: '50%',
+        border: '1px dashed var(--accent-teal)',
+        opacity: 0.5,
+        animation: 'slow-spin 25s linear infinite'
       }} />
 
-      {/* SVG Eye */}
+      {/* Segmented inner tracking ring */}
       <div style={{
-        position: 'absolute', inset: 60,
+        position: 'absolute', inset: 40, borderRadius: '50%',
+        borderTop: '3px solid var(--accent-cyan)',
+        borderBottom: '3px solid var(--accent-cyan)',
+        borderLeft: '1px solid transparent',
+        borderRight: '1px solid transparent',
+        opacity: 0.6,
+        animation: 'reverse-spin 15s linear infinite'
+      }} />
+
+      {/* Target Crosshairs */}
+      <div style={{ position: 'absolute', top: '50%', left: -20, right: -20, height: 1, background: 'var(--accent-cyan)', opacity: 0.2, pointerEvents: 'none' }} />
+      <div style={{ position: 'absolute', left: '50%', top: -20, bottom: -20, width: 1, background: 'var(--accent-cyan)', opacity: 0.2, pointerEvents: 'none' }} />
+
+      {/* Real Image Container */}
+      <div style={{
+        position: 'absolute', inset: 56,
         borderRadius: '50%',
-        background: 'var(--bg-card-hover)', // Adapts to light/dark
+        background: 'var(--bg-card)',
         overflow: 'hidden',
-        boxShadow: 'var(--glow-strong)', // Adapts to light/dark
-        transition: 'background 0.3s ease, box-shadow 0.3s ease'
+        border: '2px solid var(--accent-cyan)',
+        boxShadow: 'var(--glow-strong)', 
+        transition: 'box-shadow 0.3s ease, border 0.3s ease'
       }}>
-        {/* Iris */}
+        
+        {/* The Eye Image */}
+        <img 
+          src="/eye.jpg" 
+          alt="Ocular Scan" 
+          style={{
+            width: '100%', height: '100%',
+            objectFit: 'cover',
+            opacity: 0.85, // Blends slightly with the background
+          }}
+        />
+
+        {/* Tech Color Overlay (Creates the blue medical scanner tint) */}
         <div style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 120, height: 120, borderRadius: '50%',
-          background: 'conic-gradient(from 0deg, var(--accent-cyan), var(--accent-teal), var(--accent-blue), var(--accent-cyan))',
-          opacity: 0.8,
+          position: 'absolute', inset: 0,
+          background: 'radial-gradient(circle, transparent 30%, var(--accent-cyan) 150%)',
+          mixBlendMode: 'overlay',
+          pointerEvents: 'none',
+          opacity: 0.8
         }} />
-        {/* Pupil */}
-        <div style={{
-          position: 'absolute', top: '50%', left: '50%',
-          transform: 'translate(-50%, -50%)',
-          width: 48, height: 48, borderRadius: '50%',
-          background: '#020d18', // Keeps it dark for contrast in both modes
-          boxShadow: 'var(--glow)',
-        }} />
-        {/* Scanline */}
+
+        {/* Glowing Scanline */}
         <div style={{
           position: 'absolute', left: 0, right: 0, height: 2,
-          background: 'linear-gradient(90deg, transparent, var(--accent-cyan), transparent)',
-          opacity: 0.6,
-          animation: 'scanline 2.5s linear infinite',
+          background: 'var(--accent-cyan)',
+          boxShadow: '0 0 20px 4px var(--accent-cyan)',
+          opacity: 0.8,
+          animation: 'scanline 3s linear infinite',
         }} />
       </div>
 
@@ -150,7 +177,8 @@ function EyeVisual() {
             borderRadius: 6, padding: '6px 12px',
             fontSize: 11, fontFamily: "'Space Mono', monospace",
             color: 'var(--accent-cyan)', whiteSpace: 'nowrap',
-            transition: 'background 0.3s ease, border 0.3s ease, color 0.3s ease'
+            transition: 'background 0.3s ease, border 0.3s ease, color 0.3s ease',
+            zIndex: 10
           }}>{label}</div>
         )
       })}

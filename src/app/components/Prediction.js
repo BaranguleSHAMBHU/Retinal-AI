@@ -36,7 +36,7 @@ export default function Prediction() {
       formData.append('file', file)
 
       // 2. Send it to your FastAPI backend
-      const response = await fetch('http://127.0.0.1:8000/predict', {
+      const response = await fetch('https://retinalai-backend.onrender.com/predict', {
         method: 'POST',
         body: formData,
       })

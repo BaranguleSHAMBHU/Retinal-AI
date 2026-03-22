@@ -11,7 +11,7 @@ app = FastAPI(title="RetinalAI Disease Classifier API")
 # Allow your Next.js frontend (running on port 3000) to communicate with this backend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"], 
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
